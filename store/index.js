@@ -3,10 +3,12 @@ import thunk from 'redux-thunk';
 
 import reducers from '../reducers';
 
-export default const store = createStore(
+const store = createStore(
   reducers,
   {},
   compose(
     applyMiddleware(thunk)
   )
 );
+
+export default store;

@@ -28,6 +28,11 @@ const MainNavigator = TabNavigator({
       }
     })
   }
+}, {
+  lazy: true,
+  navigationOptions: {
+    tabBarVisible: false
+  }
 });
 
 export default class App extends React.Component {

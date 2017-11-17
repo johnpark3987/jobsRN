@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, AsyncStorage } from 'react-native';
+import { AppLoading } from 'expo';
+import { connect } from 'react-redux';
+import * as actions from '../actions';
 
 import Slides from '../components/Slides';
 
@@ -18,22 +21,43 @@ const SLIDE_DATA = [
   }
 ];
 
-export default class WelcomeScreen extends Component {
-  // static navigationOptions = {
-  //
-  // }
+class WelcomeScreen extends Component {
+  componentWillMount() {
+    this.props.checkForToken();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.hasToken) {
+      this.props.navigation.navigate('map');
+    } else {
+      this.setState({ hasToken: false });
+    }
+  }
 
   onSlidesComplete = () => {
-    console.log(this.props.navigation)
-    // console.log(this.props.navigation.navigate)
     this.props.navigation.navigate('auth');
+  }
+
+  welcomeScreenRenderer = () => {
+    if(this.state == null) {
+      return <AppLoading />
+    }
+    if(!this.state.hasToken) {
+      return <Slides data={SLIDE_DATA} onComplete={this.onSlidesComplete} />
+    }
   }
 
   render() {
     return (
       <View>
-        <Slides data={SLIDE_DATA} onComplete={this.onSlidesComplete} />
+        {this.welcomeScreenRenderer()}
       </View>
     );
   }
 }
+
+const mapStateToProps = ({ auth }) => {
+  return { hasToken: auth.hasToken };
+}
+
+export default connect(mapStateToProps, actions)(WelcomeScreen);
