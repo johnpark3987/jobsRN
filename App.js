@@ -12,7 +12,6 @@ import DeckScreen from './screens/DeckScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import ReviewScreen from './screens/ReviewScreen';
 
-
 const MainNavigator = TabNavigator({
   welcome: { screen: WelcomeScreen },
   auth: { screen: AuthScreen },
@@ -25,6 +24,12 @@ const MainNavigator = TabNavigator({
           review: { screen: ReviewScreen },
           setting: { screen: SettingsScreen }
         })
+      }
+    }, {
+      tabBarPosition: 'bottom',
+
+      tabBarOptions: {
+        labelStyle: { fontSize: 12 }
       }
     })
   }
